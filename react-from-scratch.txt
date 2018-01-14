@@ -1,0 +1,167 @@
+yarn init 
+yarn add react react-dom redux react-redux
+yarn add webpack --dev
+yarn add enzyme jest-cli@20.0.4 --dev
+yarn add npm enzyme-adapter-react-16 --dev
+yarn add redux-logger --dev
+
+create /src folder
+create /index.js 
+create /src/actions
+create /src/reducers
+create /src/components (can create containers folder later)
+
+create src/index.js
+create index.html
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--<link rel="stylesheet" href="/style/style.css">-->
+    <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css">
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="/bundle.js"></script>
+</html>
+
+
+create src/setupTests.js
+
+import requestAnimationFrame from './tempPolyfills';
+
+import { configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
+configure({ adapter: new Adapter(), disableLifecycleMethods: true });
+
+create a webpack config
+
+const path = require('path');
+
+module.exports = {
+  entry: "./src/index.js",
+  output: {
+    filename: "bundle.js",
+    path: path.join(__dirname, "build")
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader"
+        }
+      }
+    ]
+  }
+}
+
+yarn add babel-loader babel-core babel-preset-env babel-preset-react 
+
+(babel-preset-react contains all the babel presets and plugins needed for ruuning react using babel
+but it still works)
+
+add the following to package.json (we can do this rather than having a .babelrc)
+
+"babel": {
+  "presets": [
+    "env",
+    "react"
+  ]
+},
+
+yarn add webpack-dev-server
+
+add the following to package.json to specify port and hot module reloading with webpack-dev-server
+
+"build:dev": "webpack-dev-server --port=9001 --hot"
+
+webpack.config.js
+
+const path = require('path');
+const webpack = require('webpack');
+
+module.exports = {
+  entry: "./src/index.js",
+  output: {
+    filename: "bundle.js",
+    path: path.join(__dirname, "build")
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader"
+        }
+      }
+    ]
+  },
+  plugins: [
+    new webpack.ProgressPlugin(),
+  ]
+}
+
+add index.html to route
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--<link rel="stylesheet" href="/style/style.css">-->
+    <link rel="stylesheet" href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css">
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+  <script src="./bundle.js"></script>
+</html>
+
+add components/App.js
+
+import React, { Component } from 'react';
+
+export default class App extends Component {
+  constructor() {
+    super();
+  }
+
+  render() {
+    return (
+      <div>
+        Work day calculator
+      </div>
+    );
+  }
+}
+
+add index.js
+
+import React from 'react';
+import { render } from 'react-dom';
+import App from './components/App';
+
+render(<App />, document.getElementById('app'));
+
+yarn add react-test-renderer --dev (for enzyme) - i uninstalled it pparently
+not needed 
+http://airbnb.io/enzyme/docs/guides/jest.html
+
+yarn add babel-jest babel-core regenerator-runtime --dev
+
+yarn add react-test-renderer --dev
+
+When i ran tests at this point I got the following error 
+
+TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string
+
+Apparently it was down to this issue:
+
+The fix was to install a new version of jest cli
+
+yarn add --dev jest-cli@^21.2.0
+
