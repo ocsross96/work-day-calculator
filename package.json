@@ -22,7 +22,7 @@
     ]
   },
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch",
     "test:coverage": "test --coverage",
     "build": "webpack",
     "watch": "webpack --watch",
