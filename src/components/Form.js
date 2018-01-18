@@ -1,33 +1,37 @@
 import React, { Component } from 'react';
-import Input from './FormElements';
+import { Input } from './FormElements';
 
 export default class Form extends Component {
   constructor () {
     super();
+
+    this.state = { startTime: 0 };
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleInputChange (ev) {
+    ev.preventDefault();
+    const value = ev.target.value;
+    const name = ev.target.name;
+
+    this.setState({
+      [name]: value
+    });
+    console.log(this.state);
+  }
+
+  handleSubmit (ev) {
+    ev.preventDefault();
+    console.log(this.state);
   }
 
   render () {
-    const startTimeInput = {
-      label: 'Start time',
-      id: 'startTime',
-    }
     return (
-      <form>
-        this is the form
-        <Input label="Start time" id="startTime" />
-        
-        <div className="form-group">
-          <label for="startTime">Start time</label>
-          <input type="text" className="form-control" id="startTime" value="" />
-        </div>
-        <div className="form-group">
-          <label for="breakDuration">Break duration</label>
-          <input type="text" className="form-control" id="breakDuration"/>
-        </div>
-        <div className="form-group">
-          <label for="workingHours">Working hours</label>
-          <input type="text" className="form-control" id="workingHours"/>
-        </div>
+      <form onSubmit={this.handleSubmit}>
+        <Input label="Start time" id="startTime" name="startTime" onChange={this.handleInputChange} />
+        <Input label="Break duration" id="breakDuration" name="breakDuration" onChange={this.handleInputChange} />
+        <Input label="Working hours" id="workingHours" name="workingHours" onChange={this.handleInputChange} />
         <button type="submit" className="btn btn-primary">Calculate finish time</button>
       </form>
     );

@@ -1,8 +1,14 @@
+import React from 'react';
+
 export const Input = (props) => {
   return (
     <div className="form-group">
-      <label for="{props.label}">Start time</label>
-      <input type="text" className="form-control" id="{props.id}" value={props.value} />
+      <label htmlFor={props.id}>{props.label}</label>
+      <input 
+        type="text"
+        className="form-control"
+        {...props}
+        />
     </div>
   );
 };
