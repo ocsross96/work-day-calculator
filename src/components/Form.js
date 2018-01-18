@@ -19,7 +19,7 @@ export default class Form extends Component {
         </div>
         <div className="form-group">
           <label for="workingHours">Working hours</label>
-          <input type="text" className="form-control" id="workingHours"/>>
+          <input type="text" className="form-control" id="workingHours"/>
         </div>
         <button type="submit" className="btn btn-primary">Calculate finish time</button>
       </form>
