@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import connect from 'react-redux';
 import { Input } from './FormElements';
 
-export default class Form extends Component {
+export class Form extends Component {
   constructor () {
     super();
 
@@ -15,10 +16,26 @@ export default class Form extends Component {
     const value = ev.target.value;
     const name = ev.target.name;
 
-    this.setState({
-      [name]: value
-    });
-    console.log(this.state);
+    if(!validTime) {
+      // this.setState({
+      //   [name]: value
+      // });
+    }
+
+    switch (name) {
+      case 'startTime':
+        this.props.onStartTimeChange(value);
+        break;
+      case 'breakDuration':
+        this.props.onBreakDurationChange(value);
+        break;
+      case 'workingHours':
+        this.props.onWorkingHoursChange(value);
+        break;
+      default:
+      // some default case here
+
+    }
   }
 
   handleSubmit (ev) {
@@ -26,14 +43,46 @@ export default class Form extends Component {
     console.log(this.state);
   }
 
+  isValidTime () {
+    return // validate time
+  }
+
   render () {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <Input label="Start time" id="startTime" name="startTime" onChange={this.handleInputChange} />
-        <Input label="Break duration" id="breakDuration" name="breakDuration" onChange={this.handleInputChange} />
-        <Input label="Working hours" id="workingHours" name="workingHours" onChange={this.handleInputChange} />
-        <button type="submit" className="btn btn-primary">Calculate finish time</button>
-      </form>
+      <div>
+        <form onSubmit={this.handleSubmit}>
+          <Input label="Start time" id="startTime" name="startTime" onChange={this.handleInputChange} />
+          <Input label="Break duration" id="breakDuration" name="breakDuration" onChange={this.handleInputChange} />
+          <Input label="Working hours" id="workingHours" name="workingHours" onChange={this.handleInputChange} />
+          <button type="submit" className="btn btn-primary">Calculate finish time</button>
+        </form>
+        <p>Your finish time is {this.props.finishTime}</p>
+      </div>
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    startTime,
+    breakDuration,
+    workingHours,
+    finishTime
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onStartTimeChange: (time) => {
+      dispatch(setStartTime(time));
+    },
+    onBreakDurationChange: (time) => {
+      dispatch(setBreakDuration(time));
+    },
+    onWorkingHoursChange: (time) => {
+      dispatch(setWorkingHours(time));
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Form);
