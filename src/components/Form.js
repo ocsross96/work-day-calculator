@@ -1,12 +1,20 @@
 import React, { Component } from 'react';
-import connect from 'react-redux';
+import { connect } from 'react-redux';
 import { Input } from './FormElements';
+import { setStartTime, setBreakDuration, setWorkingHours } from '../actions/workDay';
 
 export class Form extends Component {
-  constructor () {
-    super();
+  constructor (props) {
+    super(props);
 
-    this.state = { startTime: 0 };
+    this.state = { 
+      startTime: props.startTime,
+      breakDuration: props.breakDuration,
+      workingHours: props.workingHours
+    };
+
+    console.log(this.state);
+
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -16,11 +24,15 @@ export class Form extends Component {
     const value = ev.target.value;
     const name = ev.target.name;
 
-    if(!isValidTime()) {
-      // this.setState({
-      //   [name]: value
-      // });
+    this.setState({
+      [name]: value
+    });
+
+    if(!this.isValidTime()) {
+      console.log('not valid time');
     }
+
+    console.log('input value', ev.target.value);
 
     switch (name) {
       case 'startTime':
@@ -44,16 +56,16 @@ export class Form extends Component {
   }
 
   isValidTime () {
-    return // validate time
+    return true;
   }
 
   render () {
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
-          <Input label="Start time" id="startTime" name="startTime" onChange={this.handleInputChange} />
-          <Input label="Break duration" id="breakDuration" name="breakDuration" onChange={this.handleInputChange} />
-          <Input label="Working hours" id="workingHours" name="workingHours" onChange={this.handleInputChange} />
+          <Input label="Start time" id="startTime" name="startTime" onChange={this.handleInputChange} value={this.state.startTime} />
+          <Input label="Break duration" id="breakDuration" name="breakDuration" onChange={this.handleInputChange} value={this.state.breakDuration} />
+          <Input label="Working hours" id="workingHours" name="workingHours" onChange={this.handleInputChange} value={this.state.workingHours} />
           <button type="submit" className="btn btn-primary">Calculate finish time</button>
         </form>
         <p>Your finish time is {this.props.finishTime}</p>
@@ -63,12 +75,7 @@ export class Form extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return {
-    startTime,
-    breakDuration,
-    workingHours,
-    finishTime
-  }
+  return state;
 }
 
 const mapDispatchToProps = (dispatch) => {
