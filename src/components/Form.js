@@ -16,7 +16,7 @@ export class Form extends Component {
     const value = ev.target.value;
     const name = ev.target.name;
 
-    if(!validTime) {
+    if(!isValidTime()) {
       // this.setState({
       //   [name]: value
       // });

@@ -3,14 +3,18 @@ import * as constants from '../actions/constants';
 const workDay = (state = {}, action) => {
   switch(action.type) {
     case constants.START_TIME:
-      return { ...state, startTime: action, };
+      return { ...state, startTime: action.payload, finishTime: getFinishTime() };
     case constants.BREAK_DURATION:
-      return { ...state, breakDuration: action };
+      return { ...state, breakDuration: action.payload };
     case constants.WORKING_HOURS:
-      return { ...state, workingHours: action };
+      return { ...state, workingHours: action.payload };
     default:
       return state;
   }
 };
 
-export default example;
+const getFinishTime = () => {
+  return 5;
+}
+
+export default workDay;
