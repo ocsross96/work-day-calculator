@@ -7,13 +7,13 @@ export class Form extends Component {
   constructor (props) {
     super(props);
 
-    this.state = { 
-      startTime: props.startTime,
-      breakDuration: props.breakDuration,
-      workingHours: props.workingHours
-    };
+    // this.state = { 
+    //   startTime: props.startTime,
+    //   breakDuration: props.breakDuration,
+    //   workingHours: props.workingHours
+    // };
 
-    console.log(this.state);
+    // console.log(this.state);
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -24,9 +24,9 @@ export class Form extends Component {
     const value = ev.target.value;
     const name = ev.target.name;
 
-    this.setState({
-      [name]: value
-    });
+    // this.setState({
+    //   [name]: value
+    // });
 
     if(!this.isValidTime()) {
       console.log('not valid time');
@@ -63,9 +63,9 @@ export class Form extends Component {
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
-          <Input label="Start time" id="startTime" name="startTime" onChange={this.handleInputChange} value={this.state.startTime} />
-          <Input label="Break duration" id="breakDuration" name="breakDuration" onChange={this.handleInputChange} value={this.state.breakDuration} />
-          <Input label="Working hours" id="workingHours" name="workingHours" onChange={this.handleInputChange} value={this.state.workingHours} />
+          <Input label="Start time" id="startTime" name="startTime" onChange={this.handleInputChange} value={this.props.startTime} />
+          <Input label="Break duration" id="breakDuration" name="breakDuration" onChange={this.handleInputChange} value={this.props.breakDuration} />
+          <Input label="Working hours" id="workingHours" name="workingHours" onChange={this.handleInputChange} value={this.props.workingHours} />
           <button type="submit" className="btn btn-primary">Calculate finish time</button>
         </form>
         <p>Your finish time is {this.props.finishTime}</p>
