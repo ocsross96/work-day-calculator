@@ -11,7 +11,8 @@ export class Form extends Component {
     this.state = { 
       startTime: props.startTime,
       breakDuration: props.breakDuration,
-      workingHours: props.workingHours
+      workingHours: props.workingHours,
+      finishTime: undefined
     };
 
     // console.log(this.state);
@@ -37,7 +38,7 @@ export class Form extends Component {
     return minutes;
   }
 
-  getFinishTime () {
+  calculateFinishTime () {
     const startTime = this.state.startTime;
     const breakDuration = this.state.breakDuration;
     const workingHours = this.state.workingHours;
@@ -161,7 +162,10 @@ export class Form extends Component {
             value={this.props.workingHours} 
           /> */}
         </form>
-        <p>Your finish time is {this.props.finishTime}</p>
+        { this.state.finishTime &&
+          <p>Your finish time is {this.state.finishTime}</p>
+        }
+        
       </div>
     );
   }
