@@ -23,7 +23,7 @@ export const TimeSelect = (props) => {
       <div className="row">
         <div className="col-sm-2">
           <div className="form-group">
-            <select name={`${props.name}`} onChange={props.onSelectChange} className="form-control" data-unit="hours">
+            <select name={`${props.name}-hours`} onChange={props.onSelectChange} className="form-control">
               {props.hours.map((hour, i) => {
                 return <option key={i} value={hour}>{hour}</option>
               })}
@@ -32,7 +32,7 @@ export const TimeSelect = (props) => {
         </div>
         <div className="col-sm-2">
           <div className="form-group">
-            <select name={`${props.name}`} onChange={props.onSelectChange} className="form-control" data-unit="minutes">
+            <select name={`${props.name}-minutes`} onChange={props.onSelectChange} className="form-control">
               {props.minutes.map((minute, i) => {
                 return <option key={i} value={minute}>{minute}</option>
               })}

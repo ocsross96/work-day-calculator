@@ -8,7 +8,7 @@ export class Form extends Component {
   constructor (props) {
     super(props);
 
-    this.state = { 
+    this.state = {
       startTime: props.startTime,
       breakDuration: props.breakDuration,
       workingHours: props.workingHours,
@@ -16,7 +16,9 @@ export class Form extends Component {
     };
 
     // console.log(this.state);
-    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSelectChange = this.handleSelectChange.bind(this);
+    this.finishTime = this.finishTime.bind(this);
+    this.isValidTime = this.isValidTime.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -36,14 +38,6 @@ export class Form extends Component {
       }
     }
     return minutes;
-  }
-
-  calculateFinishTime () {
-    const startTime = this.state.startTime;
-    const breakDuration = this.state.breakDuration;
-    const workingHours = this.state.workingHours;
-
-    console.log('get finish time');
   }
 
   handleInputChange (ev) {
@@ -79,28 +73,88 @@ export class Form extends Component {
 
   handleSelectChange (ev) {
     ev.preventDefault();
-    const target = ev.target;
-    const value = target.value;
-    const name = target.name;
-    const unit = ev.target.getAttribute('data-unit');
+    
+    // if (!isValid(value)) {
+    //   return;
+    // }
+    
+    const value = ev.target.value;
+    const name = ev.target.name;
+    // const time = this.calculateTime(value);
+    const splitName = name.split('-');
+    const desc = splitName[0];
+    const unit = splitName[1];
 
-    console.log(value);
-    console.log(typeof value);
-
-    switch (name) {
+    switch (desc) {
       case 'startTime':
-        //this.props.onStartTimeChange(value);
+        this.props.onStartTimeChange({ 
+          [unit]: value
+        });
         break;
       case 'breakDuration':
-        //this.props.onBreakDurationChange(value);
+        this.props.onBreakDurationChange({ 
+          [unit]: value
+        });
         break;
       case 'workingHours':
-        //this.props.onWorkingHoursChange(value);
+        this.props.onWorkingHoursChange({ 
+          [unit]: value
+        });
         break;
       default:
       // some default case here
 
     }
+  }
+
+  finishTime () {
+    console.log(moment);
+    console.log(moment().hour(1).minutes(23));
+
+    console.log(this.props.startTime);
+
+    if (!this.isValidTime) {
+      return;
+    }
+
+    const startTime = moment().hour(this.props.startTime.hours).minutes(this.props.startTime.minutes);
+    // const breakDuration = moment().hour(this.props.breakDuration.hours).minutes(this.props.breakDuration.minutes);
+    // const workingHours = moment().hour(this.props.workingHours.hours).minutes(this.props.workingHours.minutes);
+    
+    let finishTime = moment(startTime
+      .add({
+        'hours': this.props.workingHours.hours, 
+        'minutes': this.props.workingHours.minutes
+      })
+      .add({
+        'hours': this.props.breakDuration.hours,
+        'minutes': this.props.breakDuration.minutes
+      })
+    );
+
+    console.log('finishTime', finishTime);
+    
+    return finishTime.isValid() ? finishTime.format('HH:mm') : undefined;
+  }
+
+  calculateTime (value) {
+    const intValue = parseInt(value, 10);
+    const splitName = name.split('-');
+    const desc = splitName[0];
+    const unit = splitName[1];
+    let time = undefined;
+
+    if (unit === 'hours') {
+      time = moment(this.state[desc].minutes).format('mm');
+    }
+
+    if (unit === 'minutes') {
+      time = moment(this.state[desc].hours).format('hh');
+    }
+
+
+
+    return time;
   }
 
   handleSubmit (ev) {
@@ -109,7 +163,7 @@ export class Form extends Component {
   }
 
   isValidTime () {
-    return true;
+    return ((this.props.workingHours > 0) && (this.props.workingHours > this.props.breakDuration))
   }
 
   render () {
@@ -118,11 +172,11 @@ export class Form extends Component {
         <form onSubmit={this.handleSubmit}>
           {/* <Input
             type="time"
-            label="Start time" 
-            id="startTime" 
-            name="startTime" 
-            onChange={this.handleInputChange} 
-            value={this.props.startTime} 
+            label="Start time"
+            id="startTime"
+            name="startTime"
+            onChange={this.handleInputChange}
+            value={this.props.startTime}
           /> */}
           <TimeSelect
             name="startTime"
@@ -145,27 +199,27 @@ export class Form extends Component {
             minutes={this.getMinutes(15)}
             onSelectChange={this.handleSelectChange}
           />
-          {/* <Input 
+          {/* <Input
             type="text"
-            label="Break duration" 
-            id="breakDuration" 
-            name="breakDuration" 
-            onChange={this.handleInputChange} 
-            value={this.props.breakDuration} 
+            label="Break duration"
+            id="breakDuration"
+            name="breakDuration"
+            onChange={this.handleInputChange}
+            value={this.props.breakDuration}
           />
-          <Input 
+          <Input
             type="text"
-            label="Working hours" 
-            id="workingHours" 
-            name="workingHours" 
-            onChange={this.handleInputChange} 
-            value={this.props.workingHours} 
+            label="Working hours"
+            id="workingHours"
+            name="workingHours"
+            onChange={this.handleInputChange}
+            value={this.props.workingHours}
           /> */}
         </form>
-        { this.state.finishTime &&
-          <p>Your finish time is {this.state.finishTime}</p>
+        { this.finishTime() &&
+          <p>Your finish time is {this.finishTime()}</p>
         }
-        
+
       </div>
     );
   }
