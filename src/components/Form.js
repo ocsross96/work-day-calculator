@@ -15,11 +15,9 @@ export class Form extends Component {
       finishTime: undefined
     };
 
-    // console.log(this.state);
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.finishTime = this.finishTime.bind(this);
     this.isValidTime = this.isValidTime.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   getHours (maxHours) {
@@ -40,47 +38,11 @@ export class Form extends Component {
     return minutes;
   }
 
-  handleInputChange (ev) {
-    ev.preventDefault();
-    const value = ev.target.value;
-    const name = ev.target.name;
-
-    // this.setState({
-    //   [name]: value
-    // });
-
-    if(!this.isValidTime()) {
-      console.log('not valid time');
-    }
-
-    console.log('input value', ev.target.value);
-
-    switch (name) {
-      case 'startTime':
-        this.props.onStartTimeChange(value);
-        break;
-      case 'breakDuration':
-        this.props.onBreakDurationChange(value);
-        break;
-      case 'workingHours':
-        this.props.onWorkingHoursChange(value);
-        break;
-      default:
-      // some default case here
-
-    }
-  }
-
   handleSelectChange (ev) {
     ev.preventDefault();
-    
-    // if (!isValid(value)) {
-    //   return;
-    // }
-    
+  
     const value = ev.target.value;
     const name = ev.target.name;
-    // const time = this.calculateTime(value);
     const splitName = name.split('-');
     const desc = splitName[0];
     const unit = splitName[1];
@@ -113,7 +75,7 @@ export class Form extends Component {
 
     console.log(this.props.startTime);
 
-    if (!this.isValidTime) {
+    if (!this.isValidTime()) {
       return;
     }
 
@@ -135,31 +97,6 @@ export class Form extends Component {
     console.log('finishTime', finishTime);
     
     return finishTime.isValid() ? finishTime.format('HH:mm') : undefined;
-  }
-
-  calculateTime (value) {
-    const intValue = parseInt(value, 10);
-    const splitName = name.split('-');
-    const desc = splitName[0];
-    const unit = splitName[1];
-    let time = undefined;
-
-    if (unit === 'hours') {
-      time = moment(this.state[desc].minutes).format('mm');
-    }
-
-    if (unit === 'minutes') {
-      time = moment(this.state[desc].hours).format('hh');
-    }
-
-
-
-    return time;
-  }
-
-  handleSubmit (ev) {
-    ev.preventDefault();
-    console.log(this.state);
   }
 
   isValidTime () {
