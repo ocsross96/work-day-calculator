@@ -75,9 +75,9 @@ export class Form extends Component {
 
     console.log(this.props.startTime);
 
-    if (!this.isValidTime()) {
-      return;
-    }
+    // if (!this.isValidTime()) {
+    //   return;
+    // }
 
     const startTime = moment().hour(this.props.startTime.hours).minutes(this.props.startTime.minutes);
     // const breakDuration = moment().hour(this.props.breakDuration.hours).minutes(this.props.breakDuration.minutes);
@@ -100,7 +100,9 @@ export class Form extends Component {
   }
 
   isValidTime () {
-    return ((this.props.workingHours > 0) && (this.props.workingHours > this.props.breakDuration))
+    console.log('isValidTime');
+    console.log(((this.props.workingHours > 0) && (this.props.workingHours > this.props.breakDuration)));
+    return ((this.props.workingHours > 0) && (this.props.workingHours > this.props.breakDuration));
   }
 
   render () {
