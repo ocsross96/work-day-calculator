@@ -17,7 +17,6 @@ export class Form extends Component {
 
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.finishTime = this.finishTime.bind(this);
-    this.isValidTime = this.isValidTime.bind(this);
   }
 
   getHours (maxHours) {
@@ -70,39 +69,10 @@ export class Form extends Component {
   }
 
   finishTime () {
-    console.log(moment);
-    console.log(moment().hour(1).minutes(23));
-
-    console.log(this.props.startTime);
-
-    // if (!this.isValidTime()) {
-    //   return;
-    // }
-
     const startTime = moment().hour(this.props.startTime.hours).minutes(this.props.startTime.minutes);
-    // const breakDuration = moment().hour(this.props.breakDuration.hours).minutes(this.props.breakDuration.minutes);
-    // const workingHours = moment().hour(this.props.workingHours.hours).minutes(this.props.workingHours.minutes);
-    
-    let finishTime = moment(startTime
-      .add({
-        'hours': this.props.workingHours.hours, 
-        'minutes': this.props.workingHours.minutes
-      })
-      .add({
-        'hours': this.props.breakDuration.hours,
-        'minutes': this.props.breakDuration.minutes
-      })
-    );
-
-    console.log('finishTime', finishTime);
+    let finishTime = moment(startTime.add(this.props.workingHours).add(this.props.breakDuration));
     
     return finishTime.isValid() ? finishTime.format('HH:mm') : undefined;
-  }
-
-  isValidTime () {
-    console.log('isValidTime');
-    console.log(((this.props.workingHours > 0) && (this.props.workingHours > this.props.breakDuration)));
-    return ((this.props.workingHours > 0) && (this.props.workingHours > this.props.breakDuration));
   }
 
   render () {
