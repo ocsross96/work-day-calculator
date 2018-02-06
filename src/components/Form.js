@@ -1,20 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import TimeInput from 'material-ui-time-picker'
 import { Input, TimeSelect } from './FormElements';
 import { setStartTime, setBreakDuration, setWorkingHours } from '../actions/workDay';
+
 
 export class Form extends Component {
   constructor (props) {
     super(props);
 
-    this.state = {
-      startTime: props.startTime,
-      breakDuration: props.breakDuration,
-      workingHours: props.workingHours,
-      finishTime: undefined
-    };
+    // this.state = {
+    //   startTime: props.startTime,
+    //   breakDuration: props.breakDuration,
+    //   workingHours: props.workingHours,
+    //   finishTime: undefined
+    // };
 
+
+    this.handleTimeChange = this.handleTimeChange.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.finishTime = this.finishTime.bind(this);
   }
@@ -75,10 +79,20 @@ export class Form extends Component {
     return finishTime.isValid() ? finishTime.format('HH:mm') : undefined;
   }
 
+  handleTimeChange (time) {
+    console.log(time)
+  }
+
   render () {
+    //console.log(this.state.startTime.minutes);
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
+          {/* <TimeInput
+            mode='12h'
+            value={this.state.time}
+            onChange={(time) => this.handleTimeChange(time)}
+          /> */}
           {/* <Input
             type="time"
             label="Start time"
@@ -92,6 +106,8 @@ export class Form extends Component {
             title="Start time"
             hours={this.getHours(24)}
             minutes={this.getMinutes(15)}
+            hourValue={this.props.startTime.hours}
+            minuteValue={this.props.startTime.minutes}
             onSelectChange={this.handleSelectChange}
           />
           <TimeSelect
@@ -99,6 +115,8 @@ export class Form extends Component {
             title="Break duration"
             hours={this.getHours(5)}
             minutes={this.getMinutes(15)}
+            hourValue={this.props.breakDuration.hours}
+            minuteValue={this.props.breakDuration.minutes}
             onSelectChange={this.handleSelectChange}
           />
           <TimeSelect
@@ -106,6 +124,8 @@ export class Form extends Component {
             title="Working hours"
             hours={this.getHours(12)}
             minutes={this.getMinutes(15)}
+            hourValue={this.props.workingHours.hours}
+            minuteValue={this.props.workingHours.minutes}
             onSelectChange={this.handleSelectChange}
           />
           {/* <Input
